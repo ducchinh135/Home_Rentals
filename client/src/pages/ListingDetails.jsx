@@ -20,7 +20,7 @@ const ListingDetails = () => {
   const getListingDetails = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3001/properties/${listingId}`,
+        `${process.env.REACT_APP_API_ENDPOINT}/properties/${listingId}`,
         {
           method: "GET",
         }
@@ -74,13 +74,16 @@ const ListingDetails = () => {
         totalPrice: listing.price * dayCount,
       };
 
-      const response = await fetch("http://localhost:3001/bookings/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bookingForm),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_ENDPOINT}/bookings/create`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(bookingForm),
+        }
+      );
 
       if (response.ok) {
         navigate(`/${customerId}/trips`);
@@ -103,11 +106,8 @@ const ListingDetails = () => {
         </div>
 
         <div className="photos">
-          {listing.listingPhotoPaths?.map((item) => (
-            <img
-              src={`http://localhost:3001/${item.replace("public", "")}`}
-              alt="listing photo"
-            />
+          {listing.listingPhotoPaths?.map((photo) => (
+            <img src={`${photo.url}`} alt={`${photo.public_id}`} />
           ))}
         </div>
 
@@ -122,12 +122,7 @@ const ListingDetails = () => {
         <hr />
 
         <div className="profile">
-          <img
-            src={`http://localhost:3001/${listing.creator.profileImagePath.replace(
-              "public",
-              ""
-            )}`}
-          />
+          <img src={`${listing.creator.profileImagePath[0].url}`} />
           <h3>
             Hosted by {listing.creator.firstName} {listing.creator.lastName}
           </h3>
@@ -163,7 +158,11 @@ const ListingDetails = () => {
           <div>
             <h2>How long do you want to stay?</h2>
             <div className="date-range-calendar">
-              <DateRange ranges={dateRange} onChange={handleSelect} />
+              <DateRange
+                ranges={dateRange}
+                onChange={handleSelect}
+                minDate={new Date(Date.now())}
+              />
               {dayCount > 1 ? (
                 <h2>
                   ${listing.price} x {dayCount} nights

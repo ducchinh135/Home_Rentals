@@ -8,8 +8,16 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background: url("../../public/assets/register.jpg") center;
+  background: url("../../public/assets/background.jpg") center;
   background-size: cover;
+
+  img {
+    width: 200px;
+  }
+
+  .register_content {
+    margin-top: 5%;
+  }
 
   &_content {
     display: flex;

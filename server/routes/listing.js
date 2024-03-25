@@ -1,19 +1,14 @@
 const router = require("express").Router();
 const multer = require("multer");
+const cloudinary = require("cloudinary").v2;
+
+const getDataUri = require("../middleware/getDataUri");
 
 const Listing = require("../models/Listing");
 const User = require("../models/User");
 
 /* Configuration Multer for File Upload */
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/uploads/"); // Store uploaded files in the 'uploads' folder
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname); // Use the original file name
-  },
-});
-
+const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 /* CREATE LISTING */
@@ -47,7 +42,24 @@ router.post("/create", upload.array("listingPhotos"), async (req, res) => {
       return res.status(400).send("No file uploaded.");
     }
 
-    const listingPhotoPaths = listingPhotos.map((file) => file.path);
+    const photosPath = await Promise.all(
+      listingPhotos.map(async (listingPhoto) => {
+        const photoUri = getDataUri(listingPhoto);
+
+        const myCloud = await cloudinary.uploader.upload(photoUri.content, {
+          folder: "/homerentals/listingPhotos",
+          crop: "scale",
+          resource_type: "auto",
+        });
+
+        return {
+          public_id: myCloud.public_id,
+          url: myCloud.secure_url,
+        };
+      })
+    );
+
+    const listingPhotoPaths = photosPath;
 
     const newListing = new Listing({
       creator,

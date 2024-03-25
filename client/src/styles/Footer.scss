@@ -43,6 +43,12 @@
     }
   }
 
+  @include md {
+    flex-direction: column;
+    gap: 25px;
+    align-items: flex-start;
+  }
+
   &_center {
     text-decoration: none;
 
@@ -64,10 +70,6 @@
         }
       }
     }
-
-    @include md {
-      display: none;
-    }
   }
 
   &_right {
@@ -84,10 +86,6 @@
         margin-left: 20px;
         margin-bottom: 15px;
       }
-    }
-
-    @include sm {
-      display: none;
     }
   }
 }

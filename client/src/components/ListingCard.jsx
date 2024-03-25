@@ -50,7 +50,7 @@ const ListingCard = ({
   const patchWishList = async () => {
     if (user?._id !== creator._id) {
       const response = await fetch(
-        `http://localhost:3001/users/${user?._id}/${listingId}`,
+        `${process.env.REACT_APP_API_ENDPOINT}/users/${user?._id}/${listingId}`,
         {
           method: "PATCH",
           header: {
@@ -75,12 +75,9 @@ const ListingCard = ({
         <div
           className="slider"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
-          {listingPhotoPaths?.map((photo, index) => (
-            <div key={index} className="slide">
-              <img
-                src={`http://localhost:3001/${photo?.replace("public", "")}`}
-                alt={`photo ${index + 1}`}
-              />
+          {listingPhotoPaths?.map((photo) => (
+            <div key={photo.public_id} className="slide">
+              <img src={`${photo.url}`} alt={`${photo.public_id}`} />
               <div
                 className="prev-button"
                 onClick={(e) => {

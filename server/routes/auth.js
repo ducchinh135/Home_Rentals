@@ -1,20 +1,13 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const multer = require("multer");
+const jwt = require("jsonwebtoken");
+const cloudinary = require("cloudinary").v2;
 
+const getDataUri = require("../middleware/getDataUri");
 const User = require("../models/User");
 
-/* Configuration Multer for File Upload */
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/uploads/"); // Store uploaded files in the 'uploads' folder
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname); // Use the original file name
-  },
-});
-
+const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 /* USER REGISTER */
@@ -31,7 +24,12 @@ router.post("/register", upload.single("profileImage"), async (req, res) => {
     }
 
     /* path to the uploaded profile photo */
-    const profileImagePath = profileImage.path;
+    const pictureUri = getDataUri(profileImage);
+    const myCloud = await cloudinary.uploader.upload(pictureUri.content, {
+      folder: "/homerentals/imageProfile",
+      crop: "scale",
+      resource_type: "auto",
+    });
 
     /* Check if user exists */
     const existingUser = await User.findOne({ email });
@@ -49,7 +47,10 @@ router.post("/register", upload.single("profileImage"), async (req, res) => {
       lastName,
       email,
       password: hashedPassword,
-      profileImagePath,
+      profileImagePath: {
+        public_id: myCloud.public_id,
+        url: myCloud.secure_url,
+      },
     });
 
     /* Save the new User */

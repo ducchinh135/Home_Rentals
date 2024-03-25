@@ -54,7 +54,12 @@ const ListingSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
-    listingPhotoPaths: [{ type: String }], // Store photo URLs
+    listingPhotoPaths: [
+      {
+        public_id: String,
+        url: String,
+      },
+    ], // Store photo URLs
     title: {
       type: String,
       required: true,

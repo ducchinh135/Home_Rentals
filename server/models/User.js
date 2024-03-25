@@ -19,10 +19,12 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    profileImagePath: {
-      type: String,
-      default: "",
-    },
+    profileImagePath: [
+      {
+        public_id: String,
+        url: String,
+      },
+    ],
     tripList: {
       type: Array,
       default: [],

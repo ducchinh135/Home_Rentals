@@ -42,10 +42,16 @@ const RegisterPage = () => {
         register_form.append(key, formData[key]);
       }
 
-      const response = await fetch("http://localhost:3001/auth/register", {
-        method: "POST",
-        body: register_form,
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_ENDPOINT}/auth/register`,
+        {
+          method: "POST",
+          body: register_form,
+          // headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+
+      console.log(formData);
 
       if (response.ok) {
         navigate("/login");
@@ -57,8 +63,14 @@ const RegisterPage = () => {
 
   return (
     <div className="register">
+      <a href="/">
+        <img src="/assets/logo.png" alt="logo" />
+      </a>
       <div className="register_content">
-        <form className="register_content_form" onSubmit={handleSubmit}>
+        <form
+          className="register_content_form"
+          onSubmit={handleSubmit}
+          enctype="multipart/form-data">
           <input
             placeholder="First Name"
             name="firstName"

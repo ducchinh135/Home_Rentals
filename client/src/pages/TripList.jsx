@@ -17,7 +17,7 @@ const TripList = () => {
   const getTripList = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3001/users/${userId}/trips`,
+        `${process.env.REACT_APP_API_ENDPOINT}/users/${userId}/trips`,
         {
           method: "GET",
         }
