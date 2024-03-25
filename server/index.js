@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const dotenv = require("dotenv").config({ path: 'ENV_FILENAME' });
+const dotenv = require("dotenv").config({ path: 'MONGO_URL' });
 const cors = require("cors");
 const cloudinary = require("cloudinary").v2;
 
