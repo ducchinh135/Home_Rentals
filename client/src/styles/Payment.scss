@@ -1,0 +1,32 @@
+@import "./variables.scss";
+@import "./breakpoints.scss";
+
+.payment {
+  display: flex;
+  margin: 50px 80px;
+
+  .booking_info,
+  .customer_info {
+    border: 1px solid #ccc; /* Viền của form */
+    border-radius: 5px; /* Bo tròn các cạnh của form */
+  }
+
+  .customer_info {
+    display: flex;
+    flex-direction: column;
+
+    input {
+      width: 100%;
+      padding: 7px 15px;
+      background-color: transparent;
+
+      input:not(:placeholder-shown):focus {
+        background: transparent; /* or background: none; */
+      }
+
+      &::placeholder {
+        color: white;
+      }
+    }
+  }
+}

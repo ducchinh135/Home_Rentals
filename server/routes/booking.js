@@ -25,4 +25,17 @@ router.post("/create", async (req, res) => {
   }
 });
 
+/* PAYMENT */
+router.get("/:bookingId", async (req, res) => {
+  try {
+    const { bookingId } = req.params;
+    const booking = await Booking.findById(bookingId);
+    res.status(202).json(booking);
+  } catch (err) {
+    res
+      .status(404)
+      .json({ message: "Booking can not found!", error: err.message });
+  }
+});
+
 module.exports = router;
