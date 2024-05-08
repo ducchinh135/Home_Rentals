@@ -30,10 +30,7 @@ const LoginPage = () => {
       /* Get data after fetching */
       const loggedIn = await response.json();
 
-      if (response.status !== 200) {
-        toast.error("Invalid account");
-      } else {
-        console.log(loggedIn);
+      if (response.status === 200) {
         dispatch(
           setLogin({
             user: loggedIn.user,
@@ -41,6 +38,8 @@ const LoginPage = () => {
           })
         );
         navigate("/");
+      } else {
+        toast.error("Invalid account");
       }
     } catch (err) {
       console.log("Login failed", err.message);

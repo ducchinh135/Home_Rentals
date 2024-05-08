@@ -38,8 +38,6 @@ const ListingDetails = () => {
     getListingDetails();
   }, []);
 
-  console.log(listing);
-
   /* BOOKING CALENDAR */
   const [dateRange, setDateRange] = useState([
     {

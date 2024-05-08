@@ -11,6 +11,7 @@ import PropertyList from "./pages/PropertyList";
 import ReservationList from "./pages/ReservationList";
 import CategoryPage from "./pages/CategoryPage";
 import SearchPage from "./pages/SearchPage";
+import Payment from "./pages/Payment";
 
 function App() {
   return (
@@ -31,6 +32,8 @@ function App() {
           <Route path="/:userId/wishList" element={<WishList />} />
           <Route path="/:userId/properties" element={<PropertyList />} />
           <Route path="/:userId/reservations" element={<ReservationList />} />
+
+          <Route path="/booking/:bookingId" element={<Payment />} />
         </Routes>
       </BrowserRouter>
     </div>
